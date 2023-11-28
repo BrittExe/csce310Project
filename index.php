@@ -2,17 +2,15 @@
 <?php
 // Start the session
 session_start();
+
 ?>
 
 <!DOCTYPE html>
 <html>
 <body>
 
-<!DOCTYPE html>
-<html>
-<body>
-
 <?php require 'databaseLoad.php'; ?>
+<?php require 'databaseFunctions.php'; ?>
 
 <?php
 // handling login request
@@ -33,13 +31,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             // save UIN in session
             $_SESSION["UIN"] = $row["UIN"];
             $user_type = $row["User_Type"];
+
             // direct to correct homepage for user type
-            
-            if($user_type == "Student"){
-                header("Location: student/studentHome.php");
+            if($row["Is_Deleted"] == FALSE){
+                if($user_type !== "Admin" ){
+                    header("Location: student/studentHome.php");
+                }
+                else{
+                    header("Location: admin/adminHome.php");
+                }
             }
             else{
-                header("Location: admin/adminHome.php");
+                echo "User not found.";
             }
         }
       } else {
@@ -54,12 +57,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 
-function sanitise_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-  }
 ?>
 
 Login: <br>
@@ -75,5 +72,3 @@ NOTE: Admin accounts can only be created by other admins.
 </body>
 </html> 
 
-</body>
-</html> 
