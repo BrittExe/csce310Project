@@ -35,9 +35,9 @@ function displayAttributes($table,  $primaryKeyAttribute, $primaryKeyValue) {
 
 <?php
 // given table and the primary key name and a value, makes a form that can be used to take in inputs for those values
-// nonUpdatable is an array with the names of all attributes that should not be allowed to be updated
+// ignoreAttributes is an array with the names of all attributes that should not be allowed to be updated
 //  - example: ["UIN"]
-function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, $nonUpdatable) {
+function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, $ignoreAttributes) {
     global $conn;
 
     // get attribute names
@@ -53,11 +53,10 @@ function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, 
         while ($row = $result->fetch_assoc()) {
             $columnName = $row['Field'];
             $safeColumnName = "`$columnName`";
-            // Retrieve the value for each attribute that is associated with the PK
-            $valueSql = "SELECT $safeColumnName FROM $table WHERE $primaryKeyAttribute = '$primaryKeyValue'";
-            $valueResult = $conn->query($valueSql);
 
-            if ($valueResult->num_rows > 0) {
+
+            # exclude attributes in ignoreAttributes
+            if (!in_array($columnName, $ignoreAttributes)){
                 echo "<label for='$columnName'>$columnName:</label>";
                 echo "<input type='text' name='$columnName' id='$columnName' value=''><br>";
             }
@@ -91,9 +90,18 @@ function createEntityTable($table, $ignoreAttributes, $requireAttributes) {
         while ($row = $result->fetch_assoc()) {
             $columnName = $row['Field'];
             $safeColumnName = "`$columnName`";
-
-            echo "<label for='$columnName'>$columnName:</label>";
-            echo "<input type='text' name='$columnName' id='$columnName'><br>";
+            # exclude attributes in ignoreAttributes
+            if (!in_array($columnName, $ignoreAttributes)){
+                echo "<label for='$columnName'>$columnName:</label>";
+                # if required, make required and add a *
+                if(in_array($columnName, $requireAttributes)){
+                    echo "<input type='text' name='$columnName' id='$columnName' required>";
+                    echo " <sup>*</sup><br>";
+                }
+                else{
+                    echo "<input type='text' name='$columnName' id='$columnName'><br>";
+                }
+            }
         }
         echo "<input type='submit' value='Submit'>";
         echo "</form>";
