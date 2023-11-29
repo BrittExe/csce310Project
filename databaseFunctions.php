@@ -73,7 +73,7 @@ function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, 
 
 
 <?php
-// given table, creates a form to create a new attribute for that form. 
+// given table, creates a form to create a new entity for that form. 
 // ignoreAttributes is an array with the names of attruibutes that should not be displayed for input. 
 // requireAttruibutes are attributes that are required to be filled before the entity can be created.
 function createEntityTable($table, $ignoreAttributes, $requireAttributes) {
@@ -121,6 +121,44 @@ function sanitise_input($data) {
     $data = htmlspecialchars($data);
     return $data;
   }
+?>
+
+<?php
+    // creates a drop-down list as a form that enables selection
+    // from every table in the database
+    function table_select(){
+        global $conn;
+        // get list of tables
+        $tableSQL = "SHOW FULL TABLES WHERE Table_Type != 'VIEW'";
+        $tableResult = $conn->query($tableSQL);
+        
+        // start form
+        echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "'>";
+
+        // start select
+        echo '<select name="table" id="table">';
+
+        // for each table
+        while($row = $tableResult->fetch_assoc()) {
+            $tableName = $row['Tables_in_Cybersecurity'];
+            // add that table to select
+            echo "<option value='$tableName'>$tableName</option>";
+
+        }
+
+        // end select
+        echo '</select>';
+
+
+        // make a submit button
+        echo"<button type='submit'>Select</button>";
+
+
+        // end form
+        echo "</form>";
+    }
+
+
 ?>
 
 <!-- End of Brittain Schiller code -->

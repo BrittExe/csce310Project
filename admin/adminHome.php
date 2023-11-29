@@ -1,14 +1,16 @@
-<!DOCTYPE html>
-<html>
-<body>
+<!-- Code by Brittain Schiller -->
+
+<?php
+// Start the session
+session_start();
+?>
 
 <!DOCTYPE html>
 <html>
 <body>
 
-hi
-</body>
-</html> 
+<?php require '../databaseLoad.php'; ?>
+<?php require 'adminHeader.php'; ?>
 
 </body>
 </html> 

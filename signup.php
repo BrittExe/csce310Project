@@ -81,13 +81,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
             exit();
         }
 
-        // update the rest of the attributes corresponding to college student
-        // $updateSQL = "UPDATE College_Student SET 
-        // `Gender` = '$Gender', `Hispanic_Latino` = '$Hispanic_Latino', `Race` = '$Race', `US_Citizen` = '$US_Citizen',
-        // `First_Generation` = '$First_Generation', `DoB` = $DoB, `GPA` = '$GPA', `Major` = '$Major', `Minor_1` = '$Minor_1', 
-        // `Minor_2` = '$Minor_2', `Expected_Graduation` = '$Expected_Graduation', `School`= '$School', `Classification` = '$Classification', 
-        // `Phone` = '$Phone', `Student_Type` = '$Student_Type' WHERE `UIN` = '$UIN'";
-
         $updateSQL = "UPDATE Total_College_Student SET ";
 
         // specify the values to be updated
