@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // check if this username and password combination already exists
     $sql = "SELECT * FROM User WHERE Username = '$Username' AND Passwords = '$Passwords'";
     $userResult = $conn->query($sql);
-    if ($userResult->num_rows > 100){
+    if ($userResult->num_rows > 1){
         $finishString .= "That account already exists!";
     }
     else{

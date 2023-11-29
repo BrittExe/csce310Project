@@ -6,8 +6,7 @@ echo '<a href="../adminHome.php">Home</a> -
 <br>
 <ul>
 <li> <a href="createAdmin.php">New Admin</a> </li>
-<li> <a href="selectUser.php">View Users</a> </li>
+<li> <a href="selectUser.php">View & Delete Users</a> </li>
 <li> <a href="updateUser.php">Update User</a> </li>
-<li> <a href="deleteUser.php">Delete User</a> </li>
 </ul>';
 ?>

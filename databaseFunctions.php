@@ -125,8 +125,8 @@ function sanitise_input($data) {
 
 <?php
     // creates a drop-down list as a form that enables selection
-    // from every table in the database
-    function table_select(){
+    // from tables specified in $tables
+    function table_select($tables=""){
         global $conn;
         // get list of tables
         $tableSQL = "SHOW FULL TABLES WHERE Table_Type != 'VIEW'";
@@ -136,7 +136,49 @@ function sanitise_input($data) {
         echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "'>";
 
         // start select
-        echo '<select name="table" id="table">';
+        echo 'Table: <select name="table" id="table">';
+
+        // for each table
+        while($row = $tableResult->fetch_assoc()) {
+            $tableName = $row['Tables_in_Cybersecurity'];
+            // add that table to select if in list
+            if ( in_array($tableName, $tables)){
+                echo "<option value='$tableName'>$tableName</option>";
+            }
+
+        }
+
+        // end select
+        echo '</select>';
+
+
+        // make a submit button
+        echo"<br><button type='submit' name='submit'>Select</button>";
+
+
+        // end form
+        echo "</form>";
+    }
+
+
+?>
+
+
+<?php
+    // creates a drop-down list as a form that enables selection
+    // from every table in the database
+    // gives options to delete these entries
+    function table_select_delete(){
+        global $conn;
+        // get list of tables
+        $tableSQL = "SHOW FULL TABLES WHERE Table_Type != 'VIEW'";
+        $tableResult = $conn->query($tableSQL);
+        
+        // start form
+        echo "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "'>";
+
+        // start select
+        echo 'Table: <select name="table" id="table">';
 
         // for each table
         while($row = $tableResult->fetch_assoc()) {
@@ -150,8 +192,11 @@ function sanitise_input($data) {
         echo '</select>';
 
 
-        // make a submit button
-        echo"<button type='submit'>Select</button>";
+        // add PK text box
+        echo "<br>Primary Key: <input type='text' id='PK' name='PK' value=''>";
+
+        // temp and perma delete buttons
+        echo"<br><button type='submit'>Select</button>";
 
 
         // end form
@@ -160,5 +205,6 @@ function sanitise_input($data) {
 
 
 ?>
+
 
 <!-- End of Brittain Schiller code -->
