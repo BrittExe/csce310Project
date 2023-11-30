@@ -23,7 +23,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $Last_Name = sanitise_input($_POST["Last_Name"]);
     $Username = sanitise_input($_POST["Username"]);
     $Passwords = sanitise_input($_POST["Passwords"]);
-    $User_Type = sanitise_input($_POST["User_Type"]);
+    #$User_Type = sanitise_input($_POST["User_Type"]);
     $Email = sanitise_input($_POST["Email"]);
     $Discord_Name = sanitise_input($_POST["Discord_Name"]);
     $Gender = sanitise_input($_POST["Gender"]);
@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     // check if this username and password combination already exists
     $sql = "SELECT * FROM User WHERE Username = '$Username' AND Passwords = '$Passwords'";
     $userResult = $conn->query($sql);
-    if ($userResult->num_rows > 1){
+    if ($userResult->num_rows > 0){
         $finishString .= "That account already exists!";
     }
     else{
@@ -107,14 +107,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $finishString .= 'Account Created!';
     }
 
-    $finishString .= '<br> Click <a href="index.php">here</a> to return to the home page.';
     echo $finishString;
 }
 
 echo "<h1> Create an account: </h1>";
 echo "<h3> Entries marked with * are required. </h3>";
+echo '<br> Click <a href="index.php">here</a> to return to the home page. <br>';
 
-createEntityTable("Total_College_Student", ['UIN', 'Is_Deleted'], ['First_Name', 'Username', 'Passwords', 'Phone']);
+createEntityTable("Total_College_Student", ['UIN', 'Is_Deleted', 'User_Type'], ['First_Name', 'Username', 'Passwords', 'Phone']);
 
 ?>
 

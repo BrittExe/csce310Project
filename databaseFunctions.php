@@ -37,7 +37,8 @@ function displayAttributes($table,  $primaryKeyAttribute, $primaryKeyValue) {
 // given table and the primary key name and a value, makes a form that can be used to take in inputs for those values
 // ignoreAttributes is an array with the names of all attributes that should not be allowed to be updated
 //  - example: ["UIN"]
-function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, $ignoreAttributes) {
+// buttonName is the internal name of the button used for submission
+function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, $ignoreAttributes=[], $buttonName='submit') {
     global $conn;
 
     // get attribute names
@@ -54,14 +55,26 @@ function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, 
             $columnName = $row['Field'];
             $safeColumnName = "`$columnName`";
 
+            // Retrieve the value for each attribute that is associated with the PK
+            $valueSql = "SELECT $safeColumnName FROM $table WHERE $primaryKeyAttribute = '$primaryKeyValue'";
+            $valueResult = $conn->query($valueSql);
+            if ($valueResult->num_rows > 0) {
+                $valueRow = $valueResult->fetch_assoc();
+                $value = $valueRow[$columnName];
+            }
+            else{
+                $value = '';
+            }
 
             # exclude attributes in ignoreAttributes
             if (!in_array($columnName, $ignoreAttributes)){
                 echo "<label for='$columnName'>$columnName:</label>";
-                echo "<input type='text' name='$columnName' id='$columnName' value=''><br>";
+                echo "<input type='text' name='$columnName' id='$columnName' value='$value'><br>";
             }
         }
-        echo "<input type='submit' value='Submit'>";
+        echo "<input type='submit' name='$buttonName' value='Submit'>";
+        echo "<input type='hidden' id='backupPK' name='backupPK' value='$primaryKeyValue' />";
+        echo "<input type='hidden' id='backupTableName' name='backupTableName' value='$table' />";
         echo "</form>";
     }
      else {

@@ -62,15 +62,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
                 foreach ($row as $key => $value){
                     $tableRow .="<td>" . $value . "</td>";
                 }
+
+                // get UIN
+                $uin = $row['UIN'];
                 if ($chosenTable === "User"){
-                    // get UIN
-                    $uin = $row['UIN'];
+                    
                     $tableRow .= "<form method='post' action='" . htmlspecialchars($_SERVER['PHP_SELF']) . "'>";
 
                     $tableRow .= "<td><button name='partialDelete' value='$uin'>Partial Delete</button></td>";
                     $tableRow .= "<td><button name='fullDelete' value='$uin'>Full Delete</button></td>";
                     $tableRow .= "</form>";
-                }   
+                }
+                
+                // add update button
+                $tableRow .= "<form method='post' action='updateUser.php'>";
+                $tableRow .= "<input type='hidden' id='tableName' name='tableName' value='$chosenTable' />";
+                $tableRow .= "<td><button name='updateUIN' value='$uin'>Update</button></td>";
+                $tableRow .= "</form>";
                 $tableRow .= "</tr>";
                 echo $tableRow;
             }

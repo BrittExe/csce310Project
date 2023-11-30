@@ -27,7 +27,10 @@ session_start();
         // specify the values to be updated
         foreach ($_POST as $key => $value) {
             // dont update the value if it is blank in the form
-            if ($key !== 'UIN' && trim($value) !== '') {
+            // also dont update UIN as it is autoincremented
+            // and dont count the hidden values
+            if ($key !== 'UIN' && trim($value) !== ''
+            && $key != 'backupPK' && $key != 'submit' && $key != 'backupTableName') {
                 $isChanged = TRUE;
                 $escapedValue = $conn->real_escape_string($value);
                 // add to query
