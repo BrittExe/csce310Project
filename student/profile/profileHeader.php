@@ -2,7 +2,7 @@
 <?php
 echo '<a href="../studentHome.php">Home</a> -
 <a href="profileView.php">Profile</a> -
-<a href="../studentDelete.php">Delete Account</a>
+<a href="../studentDelete.php">Delete Account</a> -
 <a href="../../logout.php">Logout</a>
 <br>
 <ul>
