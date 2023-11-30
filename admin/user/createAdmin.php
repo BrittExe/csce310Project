@@ -24,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
     $Last_Name = sanitise_input($_POST["Last_Name"]);
     $Username = sanitise_input($_POST["Username"]);
     $Passwords = sanitise_input($_POST["Passwords"]);
-    $User_Type = sanitise_input($_POST["User_Type"]);
+    #$User_Type = sanitise_input($_POST["User_Type"]);
     $Email = sanitise_input($_POST["Email"]);
     $Discord_Name = sanitise_input($_POST["Discord_Name"]);
 
@@ -55,7 +55,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
 echo "<h1> Create an admin account: </h1>";
 echo "<h3> Entries marked with * are required. </h3>";
 
-createEntityTable("User", ['UIN', 'Is_Deleted'], ['First_Name', 'Username', 'Passwords']);
+createEntityTable("User", ['UIN', 'Is_Deleted', 'User_Type'], ['First_Name', 'Username', 'Passwords']);
 
 ?>
 
