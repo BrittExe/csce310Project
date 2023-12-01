@@ -119,7 +119,7 @@ session_start();
 
     }
 
-    updateAttributesTable('Total_College_Student', 'UIN', $UIN, []);
+    updateAttributesTable('Total_College_Student', 'UIN', $UIN, readOnlyAttributes: ['UIN']);
 
 ?>
 

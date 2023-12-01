@@ -38,7 +38,8 @@ function displayAttributes($table,  $primaryKeyAttribute, $primaryKeyValue) {
 // ignoreAttributes is an array with the names of all attributes that should not be allowed to be updated
 //  - example: ["UIN"]
 // buttonName is the internal name of the button used for submission
-function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, $ignoreAttributes=[], $buttonName='submit') {
+// readonlyAttributes is an array of attributes that should be present but not editable
+function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, $ignoreAttributes=[], $buttonName='submit', $readOnlyAttributes=[]) {
     global $conn;
 
     // get attribute names
@@ -69,7 +70,12 @@ function updateAttributesTable($table,  $primaryKeyAttribute, $primaryKeyValue, 
             # exclude attributes in ignoreAttributes
             if (!in_array($columnName, $ignoreAttributes)){
                 echo "<label for='$columnName'>$columnName:</label>";
-                echo "<input type='text' name='$columnName' id='$columnName' value='$value'><br>";
+                $ColumnVal = "<input type='text' name='$columnName' id='$columnName' value='$value'";
+                if (in_array($columnName, $readOnlyAttributes)){
+                    $ColumnVal .= ' readonly';
+                }
+                $ColumnVal .= '><br>';
+                echo $ColumnVal;
             }
         }
         echo "<input type='submit' name='$buttonName' value='Submit'>";

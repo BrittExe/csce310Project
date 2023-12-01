@@ -61,7 +61,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $UIN = $_POST['updateUIN'];
         $tableName = $_POST['tableName'];
 
-        updateAttributesTable($tableName, 'UIN', $UIN);
+        updateAttributesTable($tableName, 'UIN', $UIN, readOnlyAttributes: ['UIN']);
     }
 
 }
