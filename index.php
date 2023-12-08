@@ -30,6 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         while($row = $result->fetch_assoc()) {
             // save UIN in session
             $_SESSION["UIN"] = $row["UIN"];
+            $_SESSION["User_Type"] = $row["User_Type"];
             $user_type = $row["User_Type"];
 
             // direct to correct homepage for user type
