@@ -23,9 +23,9 @@ if ($uin != $_SESSION["UIN"] && $_SESSION["User_Type"] != "Admin") {
 }
 
 // Set table info
-$table_name = "Class_Enrollment";
+$table_name = "Cert_Enrollment";
 $query_str = "SELECT * FROM {$table_name} WHERE UIN = {$uin}";
-$primary_key = "CE_Num";
+$primary_key = "CertE_Num";
 $bit_cols = array();
 // Get student name info
 $result = $conn->query("SELECT First_Name, M_Initial, Last_Name FROM User WHERE UIN = {$uin}");
@@ -37,7 +37,6 @@ else {
     http_response_code(404);
     die("Error: The record could not be found.");
 }
-
 ?>
 <?php require 'progressUtils.php'; ?>
 <?php require 'handlePostRequest.php'; ?>
@@ -51,13 +50,18 @@ else {
 require "progressSubNav.php";
 ?>
 
+
 <div class="container-fluid">
   <div class="row mt-3">
-    <h4>Class Enrollments for <?= $name_info["First_Name"] . " " . $name_info["M_Initial"] . " " . $name_info["Last_Name"] ?></h4>
+    <h4>Cert Enrollments for <?= $name_info["First_Name"] . " " . $name_info["M_Initial"] . " " . $name_info["Last_Name"] ?></h4>
   </div>
   <div class="table-responsive mt-3">
     <?php
-      buildEditableTable($conn, $query_str, array("Class_ID" => array("query_str" => "SELECT Class_ID, Name FROM Classes", "value_col" => "Class_ID", "label_col" => "Name")), array("CE_Num", "UIN"), $uin);
+      buildEditableTable($conn, $query_str, array(
+      "Cert_ID" => array("query_str" => "SELECT Cert_ID, Name FROM Certification", "value_col" => "Cert_ID", "label_col" => "Name"),
+      "Program_Num" => array("query_str" => "SELECT Program_Num, Name FROM Programs WHERE Program_Num IN (SELECT Program_Num FROM Track WHERE UIN = {$uin})", "value_col" => "Program_Num", "label_col" => "Name")),
+      array("CertE_Num", "UIN"),
+      $uin);
     ?>
   </div>
 </div>

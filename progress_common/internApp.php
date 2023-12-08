@@ -23,9 +23,9 @@ if ($uin != $_SESSION["UIN"] && $_SESSION["User_Type"] != "Admin") {
 }
 
 // Set table info
-$table_name = "Class_Enrollment";
+$table_name = "Intern_App";
 $query_str = "SELECT * FROM {$table_name} WHERE UIN = {$uin}";
-$primary_key = "CE_Num";
+$primary_key = "IA_Num";
 $bit_cols = array();
 // Get student name info
 $result = $conn->query("SELECT First_Name, M_Initial, Last_Name FROM User WHERE UIN = {$uin}");
@@ -53,11 +53,11 @@ require "progressSubNav.php";
 
 <div class="container-fluid">
   <div class="row mt-3">
-    <h4>Class Enrollments for <?= $name_info["First_Name"] . " " . $name_info["M_Initial"] . " " . $name_info["Last_Name"] ?></h4>
+    <h4>Internship Records for <?= $name_info["First_Name"] . " " . $name_info["M_Initial"] . " " . $name_info["Last_Name"] ?></h4>
   </div>
   <div class="table-responsive mt-3">
     <?php
-      buildEditableTable($conn, $query_str, array("Class_ID" => array("query_str" => "SELECT Class_ID, Name FROM Classes", "value_col" => "Class_ID", "label_col" => "Name")), array("CE_Num", "UIN"), $uin);
+      buildEditableTable($conn, $query_str, array("Intern_ID" => array("query_str" => "SELECT Intern_ID, Name FROM Internship", "value_col" => "Intern_ID", "label_col" => "Name")), array("IA_Num", "UIN"), $uin);
     ?>
   </div>
 </div>

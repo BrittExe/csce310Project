@@ -11,46 +11,52 @@
 <body>
 
 <?php require '../../databaseLoad.php'; ?>
-<?php require '../../databaseFunctions.php'; ?>
+<?php require '../../progress_common/progressUtils.php'; ?>
+<?php session_start(); ?>
 
+<?php require "../adminHeader.php" ?>
 <div class="row">
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
     <div class="container-fluid">
-      <a class="navbar-brand">TAMCC</a>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link" href="../adminHome.php">Home</a>
+            <a class="nav-link" href="classes.php">Classes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="../user/createAdmin.php">Account Management</a>
+            <a class="nav-link" href="certification.php">Certifications</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="progressHome.php">Program Progress Tracking</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="../../logout.php">Logout</a>
+            <a class="nav-link" href="internship.php">Internships</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
 </div>
+
+
 <div class="container-fluid">
   <div class="row mt-3">
     <h4>TAMCC Students</h4>
   </div>
   <form class="d-inline-flex" method="post" action="<?= htmlspecialchars($_SERVER['PHP_SELF']) ?>">
     <select class="form-select" name="program">
-      <option selected disabled>Filter by program</option>
       <?php
-        $query = "SELECT Program_Num, Name FROM Programs";
-        $result = $conn->query($query);
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo '<option value="' . $row["Program_Num"] . '">' . $row["Name"] . '</option>';
-            }
+        $selected_value = null;
+        if ($_SERVER["REQUEST_METHOD"] == "POST"){
+          if (isset($_POST['program']) && $_POST['program'] != -1){
+            $selected_value = $_POST["program"];
+            echo '<option value="-1">All Programs</option>';
+          }
+          else {
+            echo '<option selected value="-1">All Programs</option>';
+          }
         }
+        else {
+          echo '<option selected value="-1">All Programs</option>';
+        }
+        dropdownFromSql($conn, "SELECT Program_Num, Name FROM Programs", "Program_Num", "Name", $selected_value);
       ?>
     </select>
     <button class="btn btn-outline-success p-2" type="submit">Search</button>
@@ -70,7 +76,7 @@
         <?php
           $query = "SELECT * FROM Progress_View";
           if ($_SERVER["REQUEST_METHOD"] == "POST"){
-            if (isset($_POST['program'])){
+            if (isset($_POST['program']) && $_POST['program'] != -1){
               $query = "SELECT * FROM Progress_View WHERE UIN IN (SELECT UIN FROM Track WHERE Program_Num = {$_POST['program']})";
             }
           }
