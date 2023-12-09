@@ -48,7 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST"){
         $finishString .= 'Account Created!';
     }
 
-    $finishString .= '<br> Click <a href="index.php">here</a> to return to the home page.';
     echo $finishString;
 }
 

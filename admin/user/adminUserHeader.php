@@ -2,6 +2,7 @@
 <?php
 echo '<a href="../adminHome.php">Home</a> -
 <a href="./createAdmin.php">Account Mangement</a> -
+<a href="/csce310Project/admin/progress/progressHome.php">Program Progress Tracking</a> -
 <a href="../../logout.php">Logout</a>
 <br>
 <ul>

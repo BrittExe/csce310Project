@@ -1,4 +1,3 @@
-<!-- Code by Brittain Schiller -->
 <?php
 echo '
 <div class="row">
