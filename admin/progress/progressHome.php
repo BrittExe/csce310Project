@@ -45,18 +45,18 @@
       <?php
         $selected_value = null;
         if ($_SERVER["REQUEST_METHOD"] == "POST"){
-          if (isset($_POST['program']) && $_POST['program'] != -1){
+          if (isset($_POST['program']) && $_POST['program'] != "All"){
             $selected_value = $_POST["program"];
-            echo '<option value="-1">All Programs</option>';
+            echo '<option value="All">All Programs</option>';
           }
           else {
-            echo '<option selected value="-1">All Programs</option>';
+            echo '<option selected value="All">All Programs</option>';
           }
         }
         else {
-          echo '<option selected value="-1">All Programs</option>';
+          echo '<option selected value="All">All Programs</option>';
         }
-        dropdownFromSql($conn, "SELECT Program_Num, Name FROM Programs", "Program_Num", "Name", $selected_value);
+        dropdownFromSql($conn, "SELECT Name FROM Programs", "Name", "Name", $selected_value);
       ?>
     </select>
     <button class="btn btn-outline-success p-2" type="submit">Search</button>
@@ -76,8 +76,8 @@
         <?php
           $query = "SELECT * FROM Progress_View";
           if ($_SERVER["REQUEST_METHOD"] == "POST"){
-            if (isset($_POST['program']) && $_POST['program'] != -1){
-              $query = "SELECT * FROM Progress_View WHERE UIN IN (SELECT UIN FROM Track WHERE Program_Num = {$_POST['program']})";
+            if (isset($_POST['program']) && $_POST['program'] != "All"){
+              $query = "SELECT * FROM Progress_View WHERE UIN IN (SELECT UIN FROM Track WHERE Program_Num IN (SELECT Program_Num FROM Programs WHERE Name = '{$_POST['program']}'))";
             }
           }
           $result = $conn->query($query);
