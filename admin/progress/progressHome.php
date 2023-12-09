@@ -77,6 +77,8 @@
           $query = "SELECT * FROM Progress_View";
           if ($_SERVER["REQUEST_METHOD"] == "POST"){
             if (isset($_POST['program']) && $_POST['program'] != "All"){
+              // This query just shows rows where the student is in a particular program
+              // Obviously this could just use Program_Num instead of Name but I didn't have a better reason to implement an index
               $query = "SELECT * FROM Progress_View WHERE UIN IN (SELECT UIN FROM Track WHERE Program_Num IN (SELECT Program_Num FROM Programs WHERE Name = '{$_POST['program']}'))";
             }
           }
@@ -85,6 +87,7 @@
               while ($row = $result->fetch_assoc()) {
                 echo "<tr>";
                 foreach ($row as $key => $value) {
+                  // Create clickable links to view student progress records
                   if ($key === "UIN") {
                     echo "<td>" . "<a href=\"../../progress_common/classEnrollment.php?uin={$value}\">" . $value . "</a>" . "</td>";
                   }

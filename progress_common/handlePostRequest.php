@@ -1,10 +1,13 @@
 <?php
-// Check if form submitted
+//Code by Ryan Kutz
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Handle updates
     if (isset($_POST['update'])) {
         $updates = [];
         foreach ($_POST as $key => $value) {
             if ($key != 'update' && $key != 'delete' && $key != 'insert' && $key != $primary_key) {
+                // Leave quotes off of columns with bit fields so they can update properly
                 if (!in_array($key, $bit_cols)) {
                     $updates[] = $conn->real_escape_string($key) . " = " . "'" . $conn->real_escape_string($value) . "'";
                 }
@@ -16,11 +19,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $updates = implode(", ", $updates);
         $sql = "UPDATE {$table_name} SET {$updates} WHERE {$primary_key} = '{$_POST[$primary_key]}'";
         $conn->query($sql);
+    // Handle deletes
     } elseif (isset($_POST['delete'])) {
         $sql = "DELETE FROM {$table_name} WHERE {$primary_key} = '{$_POST[$primary_key]}'";
         $conn->query($sql);
+    // Handle insertions
     } elseif (isset($_POST['insert'])) {
-        // Insert new row
         $columns = [];
         $values = [];
 

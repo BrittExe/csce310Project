@@ -14,6 +14,7 @@ function console_log($output, $with_script_tags = true) {
 
 
 // Function to fill a dropdown and set the proper selected value
+// See params below ($dropdown_cols)
 function dropdownFromSql($conn, $query_str, $value_col, $label_col, $selected_value=null, $default=null) {
     $result = $conn->query($query_str);
     if (!is_null($default)) {
@@ -32,6 +33,11 @@ function dropdownFromSql($conn, $query_str, $value_col, $label_col, $selected_va
 }
 
 // Function to create an editable table with Insert/Update/Delete functionality
+// $conn: SQL connection
+// $query_str: SELECT statement to get the table data
+// $dropdown_cols: array with key = column name 
+//                 value = array containing the connection, query string for the dropdown's data, column names for the value and label, the value to set as selected (if any) and the label for the default value (if any)
+// $uin: value to fill the UIN column for an insert (if any)
 function buildEditableTable($conn, $query_str, $dropdown_cols=array(), $readonly_cols=array(), $uin=-1) {
     $result = $conn->query($query_str);
     $columns = [];
@@ -55,6 +61,7 @@ function buildEditableTable($conn, $query_str, $dropdown_cols=array(), $readonly
             echo '<tr>';
             echo '<form method="post">';
             foreach ($row as $key => $value) {
+                // Add dropdowns
                 if (array_key_exists($key, $dropdown_cols)) {
                     echo '<td>';
                     echo '<select class="form-select form-select w-auto" name="' . $key . '">';
@@ -62,9 +69,11 @@ function buildEditableTable($conn, $query_str, $dropdown_cols=array(), $readonly
                     echo '</select>';
                     echo '</td>';
                 }
+                // Make field read-only
                 else if (in_array($key, $readonly_cols)) {
                     echo '<td><input readonly class="form-control form-control" type="text" name="' . $key . '" value="' . $value . '"></td>';
                 }
+                // Make normal field
                 else {
                     echo '<td><input class="form-control form-control" type="text" name="' . $key . '" value="' . $value . '" required></td>';
                 }

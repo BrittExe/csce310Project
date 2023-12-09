@@ -1,4 +1,5 @@
 <?php
+// Code by everyone
 echo '
 <div class="row">
   <nav class="navbar navbar-expand-sm navbar-light bg-light">
